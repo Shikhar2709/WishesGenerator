@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishes Generator 💌💫</title>
+    <style>
+        html, body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+            background: lightskyblue;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 30px;
+            text-align: center;
+            color: white;
+            flex: 1;
+            transition: transform 0.3s;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', 'Baskerville', serif;
+            font-weight: bold;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: box-shadow 0.3s;
+        }
+
+        input, select {
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        button {
+            /* background: linear-gradient(135deg, #ff416c, #ff4b2b); */
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            transition: background 0.3s, transform 0.3s;
+            font-size: 18px; /* Increased button size */
+            padding: 15px; /* Increased padding for the button */
+        }
+
+        button:hover {
+            /* background: linear-gradient(135deg, #ff4b2b, #ff416c); */
+            transform: translateY(-2px);
+        }
+
+        .wish-output {
+            font-family: 'Dancing Script', cursive;
+            margin-top: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ffeb3b; /* Bright yellow for contrast */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: auto;
+            font-size: 14px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .input-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px; /* Space between inputs */
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center; /* Center the button container */
+            gap: 10px;
+        }
+
+        /* #copyEmoji {
+            cursor: pointer;
+            font-size: 12px; 
+            background: transparent;
+            border: none;
+            color: white;
+            font-weight: bold;
+        } */
+        #generateWish {
+        font-size: 20px; /* Larger text */
+        padding: 14px 20px; /* Increase padding */
+        width: 100%; /* Full width */
+        background: linear-gradient(135deg, #ff416c, #ff4b2b);
+
+    }   
+
+    /* Styling for Copy button */
+    #copyEmoji {
+        font-size: 14px; /* Smaller text */
+        padding: 8px 10px; /* Smaller padding */
+        width: auto; /* Allow it to fit content */
+        background:white;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Wishes Generator 💌💫</h1>
+        <div class="input-container">
+            <input type="text" id="receiverName" placeholder="Enter Receiver's Name" required aria-label="Receiver's Name">
+            <select id="relationshipSelect" class="relationship-select" aria-label="Relationship">
+                <option value="" disabled selected>Relationship</option>
+                <option value="Bestfriend">Bestfriend</option>
+                <option value="Boyfriend">Boyfriend</option>
+                <option value="Girlfriend">Girlfriend</option>
+                <option value="Soulmate">Soulmate</option>
+                <option value="Brother">Brother</option>
+                <option value="Sister">Sister</option>
+                <option value="Friend">Friend</option>
+                <option value="Buddy">Buddy</option>
+            </select>
+        </div>
+        <input type="number" id="yearInput" placeholder="Optional Year (YYYY)" min="1900" max="2100" aria-label="Year">
+        <select id="festivalSelect" aria-label="Occasion">
+            <option value="" disabled selected>Select an Occasion</option>
+            <option value="Diwali">Diwali</option>
+            <option value="Holi">Holi</option>
+            <option value="Christmas">Christmas</option>
+            <option value="New Year">New Year</option>
+            <option value="Birthday">Birthday</option>
+            <option value="Marriage Anniversary">Marriage Anniversary</option>
+            <option value="Valentine's Day">Valentine's Day</option>
+            <option value="Raksha Bandhan">Raksha Bandhan</option>
+            <option value="Dussehra">Dussehra</option>
+        </select>
+        <div class="button-container">
+            <button id="generateWish" disabled>Generate Wish</button>
+            <button id="copyEmoji" aria-label="Copy Wish">📋</button>
+        </div>
+        <div id="wishOutput" class="wish-output"></div>
+    </div>
+
+    <footer>
+        <strong>Developed by Shikhar❤️ || Festive Wishes🎉🥳||</strong>
+    </footer>
+
+    <script>
+        const wishes = {
+            Diwali: [
+                "May your life be filled with light and joy. Happy Diwali to you!",
+                "Wishing you a Diwali sparkling with joy and happiness!",
+                "May the festival of lights bring you endless joy. Happy Diwali!",
+                "Celebrate this Diwali with joy in your heart and happiness in your home!",
+                "Wishing you prosperity and happiness on this auspicious occasion. Happy Diwali!",
+                "May this Diwali bring new opportunities and happiness into your life!",
+                "Let the lights of Diwali illuminate your life with joy and peace!",
+                "Wishing you a Diwali full of sweet memories and moments to cherish!",
+                "May your Diwali be filled with happiness, health, and prosperity!",
+                "Happy Diwali! May this festival bring you closer to your loved ones!"
+            ],
+            Holi: [
+                "May your life be as colorful as the festival of Holi! Enjoy!",
+                "Wishing you a Holi filled with sweet moments and colorful memories!",
+                "Let the colors of Holi spread the message of peace and happiness!",
+                "May your life be filled with vibrant colors and joy. Happy Holi!",
+                "Wishing you a joyous Holi filled with laughter and fun!",
+                "May the festival of colors bring you closer to your loved ones!",
+                "Let’s celebrate this Holi with love and happiness!",
+                "May the splash of colors bring joy to your life. Happy Holi!",
+                "Wishing you a Holi as colorful as your dreams and as joyful as your spirit!",
+                "May this Holi fill your heart with love and your life with joy!"
+            ],
+            Christmas: [
+                "May your Christmas be filled with joy and laughter! Merry Christmas!",
+                "Wishing you a festive season full of warmth, love, and happiness!",
+                "May the spirit of Christmas bring you peace and joy!",
+                "Have a magical Christmas filled with love and laughter!",
+                "Wishing you a wonderful holiday season and a happy New Year!",
+                "May your home be filled with the joy of the season. Merry Christmas!",
+                "Wishing you peace, love, and joy this Christmas!",
+                "May the joy of Christmas be with you throughout the year!",
+                "Have a blessed Christmas and a prosperous New Year ahead!",
+                "May your Christmas be bright and filled with joy!"
+            ],
+            'New Year': [
+                "Cheers to a new year filled with new opportunities! Happy New Year!",
+                "Wishing you a fabulous year ahead filled with joy and success!",
+                "May the new year bring you endless happiness and prosperity!",
+                "Here's to a year of blessings and new adventures! Happy New Year!",
+                "Wishing you a year filled with love, joy, and peace. Happy New Year!",
+                "May your resolutions be successful and your dreams come true!",
+                "Cheers to a year full of good luck and success!",
+                "Wishing you a bright New Year filled with hope and joy!",
+                "May this New Year bring new happiness, new goals, and new achievements!",
+                "Happy New Year! May every day be filled with joy and success!"
+            ],
+            Birthday: [
+                "Happy Birthday! May your day be filled with joy and laughter!",
+                "Wishing you a year of happiness and success. Happy Birthday!",
+                "May all your wishes come true on this special day! Happy Birthday!",
+                "Here's to a year filled with adventure and growth. Happy Birthday!",
+                "Wishing you a fabulous birthday filled with love and joy!",
+                "Happy Birthday! Celebrate your special day with lots of fun!",
+                "Cheers to you on your birthday! Enjoy your special day!",
+                "Wishing you a day that's as special as you are. Happy Birthday!",
+                "Happy Birthday! Celebrate big and enjoy every moment!",
+                "May this year bring you closer to your dreams!"
+            ],
+            'Marriage Anniversary': [
+                "Happy Anniversary! Wishing you a lifetime of love and happiness!",
+                "May your love continue to grow stronger with each passing year!",
+                "Cheers to another year of wonderful memories together. Happy Anniversary!",
+                "Wishing you both a day filled with love and joy. Happy Anniversary!",
+                "May your journey together be filled with happiness and adventure!",
+                "Happy Anniversary! Here’s to many more years of love and joy!",
+                "May your marriage be filled with laughter and endless love!",
+                "Wishing you both a beautiful day and a lifetime of happiness!",
+                "Happy Anniversary! Celebrate the love you share today!",
+                "Here's to your love story that inspires everyone around you!"
+            ],
+            'Valentine\'s Day': [
+                "Happy Valentine’s Day! You mean the world to me!",
+                "Wishing you a day filled with love and joy. Happy Valentine’s Day!",
+                "May your heart be filled with love and happiness today!",
+                "Happy Valentine’s Day! You are my everything!",
+                "Wishing you love, joy, and happiness today and always!",
+                "May this day bring you closer to your loved ones. Happy Valentine’s Day!",
+                "Happy Valentine’s Day! Celebrate love in all its forms!",
+                "Here’s to a day of love, laughter, and cherished moments!",
+                "May your Valentine’s Day be filled with beautiful memories!",
+                "Happy Valentine’s Day! Thank you for being you!"
+            ],
+            'Raksha Bandhan': [
+                "Happy Raksha Bandhan! May our bond grow stronger with each passing year!",
+                "Wishing you love, joy, and happiness on this special day!",
+                "May the thread of love always protect you! Happy Raksha Bandhan!",
+                "Celebrate the bond of love and protection on this Raksha Bandhan!",
+                "Wishing you all the happiness and success in the world!",
+                "Happy Raksha Bandhan! May your life be filled with blessings!",
+                "Here’s to the beautiful bond we share! Happy Raksha Bandhan!",
+                "May your Raksha Bandhan be filled with love and joy!",
+                "Wishing you a lifetime of happiness and cherished memories!",
+                "Happy Raksha Bandhan! Celebrate our special bond today!"
+            ],
+            Dussehra: [
+                "Wishing you a Dussehra filled with happiness and joy!",
+                "May this Dussehra bring you success and prosperity!",
+                "Celebrate the victory of good over evil. Happy Dussehra!",
+                "Wishing you strength and wisdom on this auspicious occasion!",
+                "May your life be filled with joy and positivity. Happy Dussehra!",
+                "Here’s to new beginnings and triumphs. Happy Dussehra!",
+                "Wishing you a Dussehra filled with blessings and happiness!",
+                "Celebrate the spirit of Dussehra with joy and love!",
+                "May this festival inspire you to achieve your dreams!",
+                "Happy Dussehra! Embrace the joy of the festival!"
+            ]
+        };
+
+        document.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('input', checkInputs);
+        });
+
+        function checkInputs() {
+            const receiverName = document.getElementById('receiverName').value.trim();
+            const festival = document.getElementById('festivalSelect').value;
+            const relationship = document.getElementById('relationshipSelect').value;
+
+            document.getElementById('generateWish').disabled = !(receiverName && festival && relationship);
+        }
+
+        document.getElementById('generateWish').addEventListener('click', () => {
+            const receiverName = document.getElementById('receiverName').value.trim();
+            const festival = document.getElementById('festivalSelect').value;
+            const relationship = document.getElementById('relationshipSelect').value;
+            const yearInput = document.getElementById('yearInput').value.trim();
+
+            if (festival) {
+                const wishList = wishes[festival];
+                const randomWish = wishList[Math.floor(Math.random() * wishList.length)];
+                let personalizedWish = `${randomWish} Dear ${receiverName}, my ${relationship.toLowerCase()}!`;
+
+                if (yearInput) {
+                    personalizedWish += ` Wishing you a fantastic ${yearInput}!`;
+                }
+
+                document.getElementById('wishOutput').innerText = personalizedWish;
+            }
+        });
+
+        document.getElementById('copyEmoji').addEventListener('click', () => {
+            const wishOutput = document.getElementById('wishOutput').innerText;
+            if (wishOutput) {
+                navigator.clipboard.writeText(wishOutput).then(() => {
+                    alert("Wish copied to clipboard!");
+                }).catch(err => {
+                    console.error("Failed to copy: ", err);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
